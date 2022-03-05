@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Collectable
+  - Enemy
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Ground
+  - GroundMarginsDown
+  - GroundMarginsSides
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 3222606249
+    locked: 0
+  - name: Vegetation
+    uniqueID: 3129772517
+    locked: 0
+  - name: Finish
+    uniqueID: 2095507841
+    locked: 0
+  - name: Collectable
+    uniqueID: 3274961535
+    locked: 0
+  - name: Entity
+    uniqueID: 3876169781
+    locked: 0
+  - name: Grass
+    uniqueID: 3988303247
+    locked: 0
+  - name: Floor
+    uniqueID: 3738449525
+    locked: 0
