@@ -6636,7 +6636,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9184654908350126515, guid: a0b7e882fb25a694b9ba9282365ba9b1, type: 3}
       propertyPath: m_Name
-      value: Level
+      value: LevelGrid
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0b7e882fb25a694b9ba9282365ba9b1, type: 3}
