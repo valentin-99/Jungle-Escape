@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2883277003610111821}
   - component: {fileID: 2883277003610111820}
   - component: {fileID: 2883277003610111823}
+  - component: {fileID: 1228026811}
   m_Layer: 6
   m_Name: FloorMP
   m_TagString: Untagged
@@ -457,6 +458,18 @@ CompositeCollider2D:
       - {x: 53.55859, y: -8}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
+--- !u!114 &1228026811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883277003610111819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 456260ee30e0c87419e3bea42eee1568, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2883277004126972993
 GameObject:
   m_ObjectHideFlags: 0
