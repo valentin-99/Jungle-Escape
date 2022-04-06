@@ -3125,7 +3125,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3974062182307202261, guid: 2c3c9f49246571b4f94e90e3749c81c7, type: 3}
       propertyPath: m_Name
-      value: GridsLevel
+      value: GridLevel
       objectReference: {fileID: 0}
     - target: {fileID: 3974062182307202261, guid: 2c3c9f49246571b4f94e90e3749c81c7, type: 3}
       propertyPath: m_IsActive
