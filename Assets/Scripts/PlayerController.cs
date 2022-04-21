@@ -115,6 +115,9 @@ public class PlayerController : MonoBehaviour
     // Decide movement
     private void Move()
     {
+        // if I jump when I am standing on the ladder anim's speed is 1
+        anim.speed = 1;
+
         // Left
         if (Input.GetAxis("Horizontal") < 0)
         {
@@ -130,16 +133,15 @@ public class PlayerController : MonoBehaviour
         }
 
         // Jump
-        //if ((Input.GetAxis("Vertical") > 0) && coll.IsTouchingLayers(ground))
-        //if (Input.GetButtonDown("Jump") && coll.IsTouchingLayers(ground))
-        if (Input.GetKey(KeyCode.Space) && coll.IsTouchingLayers(ground))
+        //if (Input.GetKey(KeyCode.Space) && coll.IsTouchingLayers(ground)) // working
+        if ((Input.GetAxis("Vertical") > 0) && coll.IsTouchingLayers(ground))
         {
             Jump();
         }
 
         // Climb
-        if (isClimbing && Mathf.Abs(Input.GetAxis("Vertical")) > 0)
-        //if (isClimbing && (Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.E)))
+        //if (isClimbing && Mathf.Abs(Input.GetAxis("Vertical")) > 0) // working
+        if (isClimbing && (Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.E)))
         {
             state = State.climb;
             rb.constraints = RigidbodyConstraints2D.FreezePositionX |
@@ -160,8 +162,8 @@ public class PlayerController : MonoBehaviour
 
     private void Climb()
     {
-        //if (Input.GetButtonDown("Jump"))
-        if (Input.GetKey(KeyCode.Space))
+        //if (Input.GetKey(KeyCode.Space)) // working
+        if (Input.GetAxis("Vertical") > 0)
         {
             Jump();
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -172,16 +174,20 @@ public class PlayerController : MonoBehaviour
         }
 
         // up
-        if (Input.GetAxis("Vertical") > 0 && !onLadderTop)
+        //if (Input.GetAxis("Vertical") > 0 && !onLadderTop) //working
+        if (Input.GetKey(KeyCode.Q) && !onLadderTop)
         {
-            rb.velocity = new Vector2(0f, Input.GetAxis("Vertical") * speed);
+            //rb.velocity = new Vector2(0f, Input.GetAxis("Vertical") * speed); //working
+            rb.velocity = new Vector2(0f, speed); //working
             anim.speed = 1;
         }
 
         // down
-        else if (Input.GetAxis("Vertical") < 0 && !onLadderBottom)
+        //else if (Input.GetAxis("Vertical") < 0 && !onLadderBottom) // working
+        else if (Input.GetKey(KeyCode.E) && !onLadderBottom)
         {
-            rb.velocity = new Vector2(0f, Input.GetAxis("Vertical") * speed);
+            //rb.velocity = new Vector2(0f, Input.GetAxis("Vertical") * speed); //working
+            rb.velocity = new Vector2(0f, -speed);
             anim.speed = 1;
         }
 
@@ -190,15 +196,6 @@ public class PlayerController : MonoBehaviour
         {
             anim.speed = 0;
         }
-
-        /*if (Input.GetKey(KeyCode.Q) && !onLadderTop)
-        {
-            rb.velocity = new Vector2(0f, Input.GetAxis("Vertical") * speed);
-        }
-        else if (Input.GetKey(KeyCode.E) && !onLadderBottom)
-        {
-            rb.velocity = new Vector2(0f, Input.GetAxis("Vertical") * speed);
-        }*/
     }
 
     // Decide animation
