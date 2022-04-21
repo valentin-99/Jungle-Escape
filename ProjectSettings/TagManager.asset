@@ -50,14 +50,14 @@ TagManager:
   - name: Vegetation
     uniqueID: 3129772517
     locked: 0
+  - name: Collectable
+    uniqueID: 3274961535
+    locked: 0
   - name: Crank
     uniqueID: 2962429641
     locked: 0
   - name: Finish
     uniqueID: 2095507841
-    locked: 0
-  - name: Collectable
-    uniqueID: 3274961535
     locked: 0
   - name: Entity
     uniqueID: 3876169781

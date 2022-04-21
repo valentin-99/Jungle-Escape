@@ -31,6 +31,9 @@ public class PlayerController : MonoBehaviour
 
     private int cherries;
 
+    // lock control of jumping
+    private bool jumpEnabled = false;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -134,9 +137,20 @@ public class PlayerController : MonoBehaviour
 
         // Jump
         //if (Input.GetKey(KeyCode.Space) && coll.IsTouchingLayers(ground)) // working
-        if ((Input.GetAxis("Vertical") > 0) && coll.IsTouchingLayers(ground))
+        //if ((Input.GetAxis("Vertical") > 0) && coll.IsTouchingLayers(ground)) // working v2.0
+        if ((Input.GetAxisRaw("Vertical") > 0) && coll.IsTouchingLayers(ground))
         {
+            // verifiy lock control and cancel if locked
+            if (!jumpEnabled) return;
+            // lock input
+            jumpEnabled = false;
+
             Jump();
+        }
+        // treath input axis released
+        else if ((Input.GetAxisRaw("Vertical") <= 0) && coll.IsTouchingLayers(ground))
+        {
+            jumpEnabled = true;
         }
 
         // Climb
@@ -163,14 +177,24 @@ public class PlayerController : MonoBehaviour
     private void Climb()
     {
         //if (Input.GetKey(KeyCode.Space)) // working
-        if (Input.GetAxis("Vertical") > 0)
+        //if (Input.GetAxis("Vertical") > 0) // working v2.0
+        if (Input.GetAxisRaw("Vertical") > 0)
         {
+            // verifiy lock control and cancel if locked
+            if (!jumpEnabled) return;
+            // lock input
+            jumpEnabled = false;
+
             Jump();
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
             isClimbing = false;
             rb.gravityScale = gravity;
             rb.drag = 0;
             anim.speed = 1;
+        }
+        // treath input axis released
+        else if (Input.GetAxisRaw("Vertical") <= 0) {
+            jumpEnabled = true;
         }
 
         // up

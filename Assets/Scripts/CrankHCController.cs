@@ -2,20 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CrankHPController : MonoBehaviour
+public class CrankHCController : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
     [SerializeField] private Sprite newSprite;
-    [SerializeField] private GameObject grid;
+    [SerializeField] private List<GameObject> collectables = new List<GameObject>();
+    //[SerializeField] public GameObject go;
 
     private void Start()
     {
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
 
+    // doesn't work at start if the script is hidden
     private void Awake()
     {
-        grid.SetActive(false);
+        foreach (GameObject collectable in collectables)
+        {
+            collectable.SetActive(false);
+        }
+        //go.SetActive(false);
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -24,7 +30,11 @@ public class CrankHPController : MonoBehaviour
         // sprite-ul manivelei.
         if (collision.CompareTag("Player") && Input.GetKey(KeyCode.Space))
         {
-            grid.SetActive(true);
+            foreach (GameObject collectable in collectables)
+            {
+                collectable.SetActive(true);
+            }
+            //go.SetActive(true);
             spriteRenderer.sprite = newSprite;
         }
     }

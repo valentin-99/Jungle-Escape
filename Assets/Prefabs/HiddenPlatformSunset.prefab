@@ -477,7 +477,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4065891302955311986}
   m_Layer: 0
-  m_Name: HiddenPlatform
+  m_Name: HiddenPlatformSunset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

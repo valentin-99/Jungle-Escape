@@ -23,7 +23,7 @@ public class CrankMPController : MonoBehaviour
     {
         // Cand manivela este trasa activam platforma miscatoare si schimbam
         // sprite-ul manivelei.
-        if (collision.CompareTag("Player") && Input.GetKey(KeyCode.C))
+        if (collision.CompareTag("Player") && Input.GetKey(KeyCode.Space))
         {
             grid.GetComponent<MovingPlatform>().enabled = true;
             spriteRenderer.sprite = newSprite;
