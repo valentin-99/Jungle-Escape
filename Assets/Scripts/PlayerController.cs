@@ -9,8 +9,14 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     private Collider2D coll;
 
-    private enum State { idle, run, jump, fallJump, hurt }
+    private enum State { idle, run, jump, fallJump, hurt, climb }
     private State state = State.idle;
+
+    [HideInInspector] public bool isClimbing = false;
+    [HideInInspector] public bool onLadderTop = false;
+    [HideInInspector] public bool onLadderBottom = false;
+    public LadderController ladder;
+    private float gravity;
 
     [SerializeField] private LayerMask ground;
     [SerializeField] private LayerMask groundMarginsDown;
@@ -35,11 +41,16 @@ public class PlayerController : MonoBehaviour
         hurtForce = 6f;
         cherries = 0;
         scoreCounter.text = "0";
+        gravity = rb.gravityScale;
     }
 
     private void Update()
     {
-        if (state != State.hurt)
+        if (state == State.climb)
+        {
+            Climb();
+        }
+        else if (state != State.hurt)
         {
             Move();
         }
@@ -119,9 +130,23 @@ public class PlayerController : MonoBehaviour
         }
 
         // Jump
-        if ((Input.GetAxis("Vertical") > 0) && coll.IsTouchingLayers(ground))
+        //if ((Input.GetAxis("Vertical") > 0) && coll.IsTouchingLayers(ground))
+        //if (Input.GetButtonDown("Jump") && coll.IsTouchingLayers(ground))
+        if (Input.GetKey(KeyCode.Space) && coll.IsTouchingLayers(ground))
         {
             Jump();
+        }
+
+        // Climb
+        if (isClimbing && Mathf.Abs(Input.GetAxis("Vertical")) > 0)
+        //if (isClimbing && (Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.E)))
+        {
+            state = State.climb;
+            rb.constraints = RigidbodyConstraints2D.FreezePositionX |
+                RigidbodyConstraints2D.FreezeRotation;
+            transform.position = new Vector3(ladder.transform.position.x, rb.position.y);
+            rb.gravityScale = 0f;
+            rb.drag = 5;
         }
     }
 
@@ -133,11 +158,59 @@ public class PlayerController : MonoBehaviour
         state = State.jump;
     }
 
+    private void Climb()
+    {
+        //if (Input.GetButtonDown("Jump"))
+        if (Input.GetKey(KeyCode.Space))
+        {
+            Jump();
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            isClimbing = false;
+            rb.gravityScale = gravity;
+            rb.drag = 0;
+            anim.speed = 1;
+        }
+
+        // up
+        if (Input.GetAxis("Vertical") > 0 && !onLadderTop)
+        {
+            rb.velocity = new Vector2(0f, Input.GetAxis("Vertical") * speed);
+            anim.speed = 1;
+        }
+
+        // down
+        else if (Input.GetAxis("Vertical") < 0 && !onLadderBottom)
+        {
+            rb.velocity = new Vector2(0f, Input.GetAxis("Vertical") * speed);
+            anim.speed = 1;
+        }
+
+        // doesn't climb, but it's on ladder
+        else
+        {
+            anim.speed = 0;
+        }
+
+        /*if (Input.GetKey(KeyCode.Q) && !onLadderTop)
+        {
+            rb.velocity = new Vector2(0f, Input.GetAxis("Vertical") * speed);
+        }
+        else if (Input.GetKey(KeyCode.E) && !onLadderBottom)
+        {
+            rb.velocity = new Vector2(0f, Input.GetAxis("Vertical") * speed);
+        }*/
+    }
+
     // Decide animation
     private void AnimationSwitch()
     {
+        if (state == State.climb)
+        {
+
+        }
+
         // If player jumps he starts falling to the ground
-        if ((state == State.jump) || (coll.IsTouchingLayers(groundMarginsDown)))
+        else if ((state == State.jump) || (coll.IsTouchingLayers(groundMarginsDown)))
         {
             if (rb.velocity.y < .1f)
             {

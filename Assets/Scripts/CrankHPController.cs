@@ -18,7 +18,7 @@ public class CrankHPController : MonoBehaviour
     {
         // Cand manivela este trasa apare platforma ascunsa si schimbam
         // sprite-ul manivelei.
-        if (collision.CompareTag("Player") && Input.GetKey(KeyCode.Space))
+        if (collision.CompareTag("Player") && Input.GetKey(KeyCode.C))
         {
             grid.SetActive(true);
             spriteRenderer.sprite = newSprite;
