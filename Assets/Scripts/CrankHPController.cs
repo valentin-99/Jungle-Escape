@@ -6,7 +6,7 @@ public class CrankHPController : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
     [SerializeField] private Sprite newSprite;
-    [SerializeField] private GameObject grid;
+    [SerializeField] private List<GameObject> grids = new List<GameObject>();
 
     private void Start()
     {
@@ -15,7 +15,11 @@ public class CrankHPController : MonoBehaviour
 
     private void Awake()
     {
-        grid.SetActive(false);
+        //grid.SetActive(false);
+        foreach (GameObject grid in grids)
+        {
+            grid.SetActive(false);
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -24,7 +28,11 @@ public class CrankHPController : MonoBehaviour
         // sprite-ul manivelei.
         if (collision.CompareTag("Player") && Input.GetKey(KeyCode.Space))
         {
-            grid.SetActive(true);
+            //grid.SetActive(true);
+            foreach (GameObject grid in grids)
+            {
+                grid.SetActive(true);
+            }
             spriteRenderer.sprite = newSprite;
         }
     }
