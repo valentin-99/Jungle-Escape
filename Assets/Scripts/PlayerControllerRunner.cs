@@ -24,7 +24,9 @@ public class PlayerControllerRunner : MonoBehaviour
 
     private int cherries;
     private bool startGame = false;
-    [SerializeField] private List<GameObject> platforms = new List<GameObject>();
+    //[SerializeField] private List<GameObject> platforms = new List<GameObject>();
+
+    //[HideInInspector] public Transform currentMiddlePos;
 
     private void Start()
     {
@@ -40,6 +42,7 @@ public class PlayerControllerRunner : MonoBehaviour
 
     private void Update()
     {
+        //GetCurrentPlatform();
 
         if (state != State.hurt)
         {
@@ -53,6 +56,20 @@ public class PlayerControllerRunner : MonoBehaviour
         anim.SetInteger("state", (int)state);
     }
 
+/*    private void GetCurrentPlatform()
+    {
+        if (coll.IsTouchingLayers(ground))
+        {
+            GameObject floor = coll.gameObject;
+            //GameObject platform = floor.transform.parent.gameObject;
+            //GameObject middlePos = platform.transform.GetChild(2).gameObject;
+            //currentMiddlePos = middlePos.transform;
+            //Debug.Log(currentMiddlePos);
+
+            Debug.Log(floor.transform.position);
+        }
+    }*/
+
     // Collision for collectable items
     private void OnTriggerEnter2D(Collider2D col)
     {
@@ -64,6 +81,8 @@ public class PlayerControllerRunner : MonoBehaviour
             scoreCounter.text = cherries.ToString();
             Collect();
         }
+
+
     }
 
     // Collision for enemies

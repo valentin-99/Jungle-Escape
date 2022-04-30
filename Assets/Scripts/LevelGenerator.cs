@@ -4,18 +4,78 @@ using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
-    [SerializeField] private Transform NewPlatform;
+    [SerializeField] private Transform player;
+    [SerializeField] private Transform startPlatform;
+    [SerializeField] private List<Transform> PlatformsList;
+    [SerializeField] private Transform background;
 
-    void Awake()
+    private Transform currentPlatform;
+    private Transform lastPlatform = null;
+    private Vector3 lastMiddlePos = new Vector3(float.MinValue, 0);
+
+    private Transform currentBackground;
+    private Transform lastBackground = null;
+    private Vector3 lastMiddlePosBackground = new Vector3(float.MinValue, 0);
+
+    private void Start()
     {
-        //SpawnPlatform(new Vector3(24, 1));
-        //SpawnPlatform(new Vector3(24, 1) + new Vector3(8, 1));
-        //SpawnPlatform(new Vector3(24, 1) + new Vector3(8 + 8, -1));
+        currentPlatform = startPlatform;
+        currentBackground = background;
     }
 
-    private void SpawnPlatform(Vector3 pos)
+    private Transform SpawnPlatform(Transform platform, Vector3 pos)
     {
-        Instantiate(NewPlatform, pos, Quaternion.identity);
+        return Instantiate(platform, pos, Quaternion.identity);
     }
 
+    private void Update()
+    {
+        //GenerateBackground();
+        GeneratePlatforms();
+    }
+
+    private void GeneratePlatforms()
+    {
+        // get middle position of current chunk
+        Vector3 currentMiddlePos = currentPlatform.Find("MiddlePos").position;
+
+        // if player arrive at current middle position
+        if (player.position.x >= currentMiddlePos.x)
+        {
+            // if there is any previous chunk and if player arrived at the middle of the
+            // new chunk then delete the previous platform.
+            if (lastMiddlePos.x != float.MinValue && player.position.x >= lastMiddlePos.x + 24)
+            {
+                Destroy(lastPlatform.gameObject);
+            }
+
+            // choose a random platform from list, assign it as the new current platform
+            // and render it at previous current position + 12
+            int randomIndex = Random.Range(0, PlatformsList.Count);
+            Transform randomPlatform = PlatformsList[randomIndex];
+            lastPlatform = currentPlatform;
+            lastMiddlePos = currentMiddlePos;
+            if (randomPlatform != null)
+            {
+                currentPlatform = SpawnPlatform(randomPlatform, new Vector3(lastMiddlePos.x + 12, lastMiddlePos.y));
+            }
+        }
+    }
+
+    private void GenerateBackground()
+    {
+        Vector3 currentMiddlePos = currentBackground.Find("MiddlePos").position;
+
+        if (player.position.x >= currentMiddlePos.x)
+        {
+            if (lastMiddlePosBackground.x != float.MinValue)
+            {
+                Destroy(lastBackground.gameObject);
+            }
+
+            lastBackground = currentBackground;
+            lastMiddlePosBackground = currentMiddlePos;
+            currentPlatform = SpawnPlatform(background, new Vector3(lastMiddlePosBackground.x + 60, lastMiddlePosBackground.y));
+        }
+    }
 }
