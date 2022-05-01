@@ -8,6 +8,7 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private Transform startPlatform;
     [SerializeField] private List<Transform> PlatformsList;
     [SerializeField] private Transform background;
+    [SerializeField] private Transform fallingZone;
 
     private Transform currentPlatform;
     private Transform lastPlatform = null;
@@ -17,10 +18,23 @@ public class LevelGenerator : MonoBehaviour
     private Transform lastBackground = null;
     private Vector3 lastMiddlePosBackground = new Vector3(float.MinValue, 0);
 
-    private void Start()
+    private Transform currentFallingZone;
+    private Transform lastFallingZone = null;
+    private Vector3 lastMiddlePosFall = new Vector3(float.MinValue, -8.5f);
+
+
+    private void Awake()
     {
-        currentPlatform = startPlatform;
-        currentBackground = background;
+        currentBackground = SpawnPlatform(background, new Vector3(0, 0));
+        currentPlatform = SpawnPlatform(startPlatform, new Vector3(-11, 0));
+        currentFallingZone = SpawnPlatform(fallingZone, new Vector3(0, -8.5f));
+    }
+
+    private void Update()
+    {
+        GenerateBackground();
+        GeneratePlatforms();
+        GenerateFallingZone();
     }
 
     private Transform SpawnPlatform(Transform platform, Vector3 pos)
@@ -28,10 +42,27 @@ public class LevelGenerator : MonoBehaviour
         return Instantiate(platform, pos, Quaternion.identity);
     }
 
-    private void Update()
+    private void GenerateBackground()
     {
-        //GenerateBackground();
-        GeneratePlatforms();
+        // get middle position of current background
+        Vector3 currentMiddlePosBackground = currentBackground.Find("MiddlePos").position;
+
+        // if player arrived at current middle position
+        if (player.position.x >= currentMiddlePosBackground.x)
+        {
+            // if there is any previous background and if player arrived at the middle of the
+            // new background then delete the previous background.
+            if (lastMiddlePosBackground.x != float.MinValue && player.position.x >= lastMiddlePosBackground.x + 60)
+            {
+                Destroy(lastBackground.gameObject);
+            }
+
+            // assign the current background and it's position to the last background
+            // render the new background and assign it to the current one
+            lastBackground = currentBackground;
+            lastMiddlePosBackground = currentMiddlePosBackground;
+            currentBackground = SpawnPlatform(background, new Vector3(lastMiddlePosBackground.x + 60, lastMiddlePosBackground.y));
+        }
     }
 
     private void GeneratePlatforms()
@@ -43,7 +74,7 @@ public class LevelGenerator : MonoBehaviour
         if (player.position.x >= currentMiddlePos.x)
         {
             // if there is any previous chunk and if player arrived at the middle of the
-            // new chunk then delete the previous platform.
+            // new chunk then delete the previous chunk.
             if (lastMiddlePos.x != float.MinValue && player.position.x >= lastMiddlePos.x + 24)
             {
                 Destroy(lastPlatform.gameObject);
@@ -62,20 +93,20 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
-    private void GenerateBackground()
+    private void GenerateFallingZone()
     {
-        Vector3 currentMiddlePos = currentBackground.Find("MiddlePos").position;
+        Vector3 currentMiddlePosFall = currentFallingZone.position;
 
-        if (player.position.x >= currentMiddlePos.x)
+        if (player.position.x >= currentMiddlePosFall.x)
         {
-            if (lastMiddlePosBackground.x != float.MinValue)
+            if (lastMiddlePosFall.x != float.MinValue && player.position.x >= lastMiddlePosFall.x + 60)
             {
-                Destroy(lastBackground.gameObject);
+                Destroy(lastFallingZone.gameObject);
             }
 
-            lastBackground = currentBackground;
-            lastMiddlePosBackground = currentMiddlePos;
-            currentPlatform = SpawnPlatform(background, new Vector3(lastMiddlePosBackground.x + 60, lastMiddlePosBackground.y));
+            lastFallingZone = currentFallingZone;
+            lastMiddlePosFall = currentMiddlePosFall;
+            currentFallingZone = SpawnPlatform(fallingZone, new Vector3(lastMiddlePosFall.x + 60, lastMiddlePosFall.y));
         }
     }
 }

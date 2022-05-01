@@ -24,9 +24,6 @@ public class PlayerControllerRunner : MonoBehaviour
 
     private int cherries;
     private bool startGame = false;
-    //[SerializeField] private List<GameObject> platforms = new List<GameObject>();
-
-    //[HideInInspector] public Transform currentMiddlePos;
 
     private void Start()
     {
@@ -42,33 +39,15 @@ public class PlayerControllerRunner : MonoBehaviour
 
     private void Update()
     {
-        //GetCurrentPlatform();
-
         if (state != State.hurt)
         {
             Move();
         }
 
-        //MovePlatform();
-
         AnimationSwitch();
         // Sets the animation state
         anim.SetInteger("state", (int)state);
     }
-
-/*    private void GetCurrentPlatform()
-    {
-        if (coll.IsTouchingLayers(ground))
-        {
-            GameObject floor = coll.gameObject;
-            //GameObject platform = floor.transform.parent.gameObject;
-            //GameObject middlePos = platform.transform.GetChild(2).gameObject;
-            //currentMiddlePos = middlePos.transform;
-            //Debug.Log(currentMiddlePos);
-
-            Debug.Log(floor.transform.position);
-        }
-    }*/
 
     // Collision for collectable items
     private void OnTriggerEnter2D(Collider2D col)
@@ -124,29 +103,6 @@ public class PlayerControllerRunner : MonoBehaviour
         }
     }
 
-    /*private void MovePlatform()
-    {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            startGame = true;
-        }
-
-        if (startGame)
-        {
-            foreach (GameObject platform in platforms)
-            {
-                //platform.transform.position = new Vector3(-platform.transform.position.x * Time.deltaTime, platform.transform.position.y);
-                //platform.transform.position = platform.transform.right * -2 * Time.deltaTime;
-            }
-            //platforms[0].transform.position = platforms[0].transform.right * -2 * Time.deltaTime;
-            //platforms[1].transform.position = platforms[1].transform.right * -2 * Time.deltaTime;
-
-            //platforms[0].transform.position = new Vector3(-platforms[0].transform.position.x * Time.deltaTime, platforms[0].transform.position.y, 0);
-            //platforms[1].transform.position = new Vector3(-platforms[1].transform.position.x * Time.deltaTime, platforms[1].transform.position.y, 0);
-        }
-    }*/
-
-    // Decide movement
     private void Move()
     {
         if (Input.GetKey(KeyCode.Space))
@@ -154,20 +110,20 @@ public class PlayerControllerRunner : MonoBehaviour
             startGame = true;
         }
 
+        // Run
         if (startGame)
         {
             rb.velocity = new Vector2(speed, rb.velocity.y);
         }
 
         // Jump continuous
-        if ((Input.GetAxis("Vertical") > 0) && coll.IsTouchingLayers(ground))
+        if ((Input.GetAxis("Vertical") > 0) && coll.IsTouchingLayers(ground) && startGame)
         {
             Jump();
         }
 
 
     }
-
 
     // Jump util function
     private void Jump()
