@@ -5,20 +5,27 @@ using UnityEngine.Tilemaps;
 
 public class ProceduralGeneration : MonoBehaviour
 {
-    [SerializeField] int width, height;
-    [SerializeField] float smoothness;
-    [SerializeField] float seed;
-    [SerializeField] TileBase natureTile, skyTile;
-    [SerializeField] Tilemap natureTilemap, skyTilemap;
-    int[,] map;
+    [SerializeField] public int width, height;
+    [SerializeField] private float smoothness;
+    [SerializeField] private float seed;
+    [SerializeField] private TileBase groundTile, skyTile;
+    [SerializeField] private Tilemap groundTilemap, skyTilemap;
+    [SerializeField] private GameObject spawnPlayer;
 
     [Header("Sky")]
     [Range(0, 1)]
-    [SerializeField] float modifier;
+    [SerializeField] private float modifier;
+
+    public int[,] map;
 
     private void Start()
     {
+        map = new int [width, height];
         Generation();
+
+        // the ground needs to be rendered first, otherwise the map variable
+        // will be empty when it is accessed from SpawnPlayer script
+        spawnPlayer.SetActive(true);
     }
 
     private void Update()
@@ -33,10 +40,10 @@ public class ProceduralGeneration : MonoBehaviour
     {
         seed = Random.Range(-10000, 10000);
         ClearMap();
-        natureTilemap.ClearAllTiles();
+        groundTilemap.ClearAllTiles();
         map = GenerateArray(width, height, true);
         map = TerrainGeneration(map);
-        RenderMap(map, natureTilemap, skyTilemap, natureTile, skyTile);
+        RenderMap(map, groundTilemap, skyTilemap, groundTile, skyTile);
     }
 
     private int[,] GenerateArray(int width, int height, bool empty)
@@ -56,7 +63,7 @@ public class ProceduralGeneration : MonoBehaviour
 
     private void ClearMap()
     {
-        natureTilemap.ClearAllTiles();
+        groundTilemap.ClearAllTiles();
         skyTilemap.ClearAllTiles();
     }
 
@@ -69,7 +76,6 @@ public class ProceduralGeneration : MonoBehaviour
             perlinHeight += height / 2;
             for (int j = 0; j < perlinHeight; j++)
             {
-                //map[i, j] = 1;
                 int skyVal = Mathf.RoundToInt(Mathf.PerlinNoise((i * modifier) * seed, (j * modifier) + seed));
                 if (skyVal == 1)
                     map[i, j] = 2;
@@ -81,14 +87,14 @@ public class ProceduralGeneration : MonoBehaviour
         return map;
     }
 
-    private void RenderMap(int[,] map, Tilemap natureTilemap, Tilemap skyTilemap, TileBase natureTile, TileBase skyTile)
+    private void RenderMap(int[,] map, Tilemap groundTilemap, Tilemap skyTilemap, TileBase groundTile, TileBase skyTile)
     {
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
             {
                 if (map[i,j] == 1)
-                    natureTilemap.SetTile(new Vector3Int(i, j, 0), natureTile);
+                    groundTilemap.SetTile(new Vector3Int(i, j, 0), groundTile);
                 else if (map[i,j] == 2 || map[i,j] == 0)
                     skyTilemap.SetTile(new Vector3Int(i, j, 0), skyTile);
             }
