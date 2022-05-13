@@ -169,7 +169,6 @@ MonoBehaviour:
   width: 80
   height: 40
   smoothness: 30
-  seed: 0
   groundTile: {fileID: 11400000, guid: aff3272ff73219f4e9638d92dd0e003d, type: 2}
   skyTile: {fileID: 11400000, guid: 211182da457e44f4fb7a61c0fca26159, type: 2}
   groundTilemap: {fileID: 2006588160}
@@ -219,7 +218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0283aeccdfdf9aa47806dfffcefb65e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 8968715832102991055, guid: 14239f5fb3983eb47b7e64255ea88f89, type: 3}
+  player: {fileID: 6392026812494028255, guid: 16bf46ffc6c4b304f937d40c2e38aaf2, type: 3}
   proceduralGeneration: {fileID: 418942781}
 --- !u!1 &1087750536
 GameObject:

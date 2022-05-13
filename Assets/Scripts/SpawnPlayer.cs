@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public struct Pair
 {
@@ -18,7 +19,7 @@ public struct Pair
 
 public class SpawnPlayer : MonoBehaviour
 {
-    [SerializeField] Transform player;
+    [SerializeField] GameObject player;
     [SerializeField] GameObject proceduralGeneration;
 
     // Start is called before the first frame update
@@ -50,19 +51,9 @@ public class SpawnPlayer : MonoBehaviour
         }
 
         int randomIdx = Random.Range(0, spawnArray.Count);
-
-        /*Debug.Log(spawnArray[0]);
-        Debug.Log(pg.map[spawnArray[0].X, spawnArray[0].X]);
-        Debug.Log(spawnArray[1]);
-        Debug.Log(pg.map[spawnArray[1].X, spawnArray[1].X]);
-        Debug.Log(spawnArray[2]);   
-        Debug.Log(pg.map[spawnArray[2].X, spawnArray[2].X]);
-        Debug.Log(spawnArray[3]);   
-        Debug.Log(pg.map[spawnArray[3].X, spawnArray[3].X]);
-
-        Debug.Log(spawnArray[randomIdx]);*/
+        Vector2 spawnPos = new Vector2(spawnArray[randomIdx].X + .5f, spawnArray[randomIdx].Y + 2);
 
         // render the player with correction (+.5f, +2f)
-        Instantiate(player, new Vector3(spawnArray[randomIdx].X + .5f, spawnArray[randomIdx].Y + 2), Quaternion.identity);
+        PhotonNetwork.Instantiate(player.name, spawnPos, Quaternion.identity);
     }
 }

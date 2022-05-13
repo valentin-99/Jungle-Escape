@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Photon.Pun;
 
-public class ProceduralGeneration : MonoBehaviour
+public class ProceduralGeneration : MonoBehaviourPunCallbacks
 {
     [SerializeField] public int width, height;
     [SerializeField] private float smoothness;
-    [SerializeField] private float seed;
     [SerializeField] private TileBase groundTile, skyTile;
     [SerializeField] private Tilemap groundTilemap, skyTilemap;
     [SerializeField] private GameObject spawnPlayer;
@@ -15,6 +15,8 @@ public class ProceduralGeneration : MonoBehaviour
     [Header("Sky")]
     [Range(0, 1)]
     [SerializeField] private float modifier;
+
+    private float seed;
 
     public int[,] map;
 
@@ -28,17 +30,15 @@ public class ProceduralGeneration : MonoBehaviour
         spawnPlayer.SetActive(true);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Generation();
-        }
-    }
-
     private void Generation()
     {
-        seed = Random.Range(-10000, 10000);
+        //seed = Random.Range(-10000, 10000);
+        // testing value
+        //seed = 3876;
+
+        // value from lobby
+        seed = CreateAndJoinRoms.seed;
+
         ClearMap();
         groundTilemap.ClearAllTiles();
         map = GenerateArray(width, height, true);
