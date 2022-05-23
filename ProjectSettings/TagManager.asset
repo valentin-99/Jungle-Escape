@@ -7,6 +7,16 @@ TagManager:
   - Collectable
   - Enemy
   - Crank
+  - solo1
+  - solo2
+  - solo3
+  - solo4
+  - solo5
+  - solo6
+  - runner_day
+  - runner_sunset
+  - runner_night
+  - multiplayer
   layers:
   - Default
   - TransparentFX

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
+
 
 public class PlayerControllerMulti : MonoBehaviour
 {
@@ -51,6 +53,11 @@ public class PlayerControllerMulti : MonoBehaviour
             AnimationSwitch();
             // Sets the animation state
             anim.SetInteger("state", (int)state);
+
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                SceneManager.LoadScene("LevelSelection");
+            }
         }
     }
 
@@ -60,14 +67,14 @@ public class PlayerControllerMulti : MonoBehaviour
         if (Input.GetAxis("Horizontal") < 0)
         {
             rb.velocity = new Vector2(-speed, rb.velocity.y);
-            transform.localScale = new Vector2(-.75f, .75f);
+            transform.localScale = new Vector2(-.5f, .5f);
         }
 
         // Right
         else if (Input.GetAxis("Horizontal") > 0)
         {
             rb.velocity = new Vector2(speed, rb.velocity.y);
-            transform.localScale = new Vector2(.75f, .75f);
+            transform.localScale = new Vector2(.5f, .5f);
         }
 
         // Jump

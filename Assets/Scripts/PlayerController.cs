@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -61,6 +62,11 @@ public class PlayerController : MonoBehaviour
         AnimationSwitch();
         // Sets the animation state
         anim.SetInteger("state", (int)state);
+
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("LevelSelection");
+        }
     }
 
     // Collision for collectable items

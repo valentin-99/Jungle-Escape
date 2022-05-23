@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerControllerIso : MonoBehaviour
 {
@@ -29,6 +30,51 @@ public class PlayerControllerIso : MonoBehaviour
         AnimationSwitch();
         // Sets the animation state
         anim.SetInteger("state", (int)state);
+    }
+
+    // Level selection
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.CompareTag("solo1"))
+        {
+            SceneManager.LoadScene("Level1");
+        }
+        else if (col.CompareTag("solo2"))
+        {
+            SceneManager.LoadScene("Level2");
+        }
+        else if (col.CompareTag("solo3"))
+        {
+            SceneManager.LoadScene("Level3");
+        }
+        else if (col.CompareTag("solo4"))
+        {
+            SceneManager.LoadScene("Level4");
+        }
+        else if (col.CompareTag("solo5"))
+        {
+            SceneManager.LoadScene("Level5");
+        }
+        else if (col.CompareTag("solo6"))
+        {
+            SceneManager.LoadScene("Level6");
+        }
+        else if (col.CompareTag("runner_day"))
+        {
+            SceneManager.LoadScene("RunnerDay");
+        }
+        else if (col.CompareTag("runner_sunset"))
+        {
+            SceneManager.LoadScene("RunnerSunset");
+        }
+        else if (col.CompareTag("runner_night"))
+        {
+            SceneManager.LoadScene("RunnerNight");
+        }
+        else if (col.CompareTag("multiplayer"))
+        {
+            SceneManager.LoadScene("Loading");
+        }
     }
 
     private void Move()
