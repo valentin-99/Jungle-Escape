@@ -66,8 +66,6 @@ public class PlayerControllerRunner : MonoBehaviour
             scoreCounter.text = cherries.ToString();
             Collect();
         }
-
-
     }
 
     // Collision for enemies

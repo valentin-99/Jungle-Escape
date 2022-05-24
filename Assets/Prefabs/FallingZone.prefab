@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4372717078376197580}
   - component: {fileID: 4372717078376197583}
-  - component: {fileID: 4372717078376197581}
+  - component: {fileID: 3521127465212472820}
   m_Layer: 0
   m_Name: FallingZone
   m_TagString: Untagged
@@ -58,7 +58,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 155, y: 1}
   m_EdgeRadius: 0
---- !u!114 &4372717078376197581
+--- !u!114 &3521127465212472820
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

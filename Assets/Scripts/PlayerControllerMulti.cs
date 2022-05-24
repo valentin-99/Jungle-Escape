@@ -65,7 +65,21 @@ public class PlayerControllerMulti : MonoBehaviour
             // Exit level
             if (Input.GetKey(KeyCode.Escape))
             {
+                // disconnect from server and load scene
+                PhotonNetwork.Disconnect();
                 SceneManager.LoadScene("LevelSelection");
+            }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (view.IsMine)
+        {
+            if (collision.gameObject.name == "FallingZone")
+            {
+                PhotonNetwork.Disconnect();
+                SceneManager.LoadScene("LoseLevel");
             }
         }
     }
