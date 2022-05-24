@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 
 
 public class PlayerControllerMulti : MonoBehaviour
@@ -27,6 +28,7 @@ public class PlayerControllerMulti : MonoBehaviour
 
     PhotonView view;
 
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -34,10 +36,16 @@ public class PlayerControllerMulti : MonoBehaviour
         coll = GetComponent<Collider2D>();
         view = GetComponent<PhotonView>();
         audioListener = GetComponent<AudioListener>();
-        
+
         if (view.IsMine)
         {
             audioListener.enabled = true;
+
+            // Follow player
+            GameObject vcam = GameObject.Find("CM vcam1");
+            CinemachineVirtualCamera cvcam;
+            cvcam = vcam.GetComponent<CinemachineVirtualCamera>();
+            cvcam.Follow = this.gameObject.transform;
         }
 
         speed = 6f;
@@ -54,6 +62,7 @@ public class PlayerControllerMulti : MonoBehaviour
             // Sets the animation state
             anim.SetInteger("state", (int)state);
 
+            // Exit level
             if (Input.GetKey(KeyCode.Escape))
             {
                 SceneManager.LoadScene("LevelSelection");
