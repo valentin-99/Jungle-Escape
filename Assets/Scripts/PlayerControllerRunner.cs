@@ -17,11 +17,13 @@ public class PlayerControllerRunner : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float jumpForce;
     [SerializeField] private float hurtForce;
-    [SerializeField] private Text scoreCounter;
+    [SerializeField] private Text cherriesCounter;
+    [SerializeField] private Text metersCounter;
     [SerializeField] private AudioSource footstep;
     [SerializeField] private AudioSource bounce;
     [SerializeField] private AudioSource collect;
     [SerializeField] private AudioSource boink;
+    [SerializeField] private Transform cameraLimit;
 
     private int cherries;
     private bool startGame = false;
@@ -34,8 +36,9 @@ public class PlayerControllerRunner : MonoBehaviour
         speed = 6f;
         jumpForce = 14f;
         hurtForce = 6f;
-        //cherries = 0;
-        //scoreCounter.text = "0";
+        cherries = 0;
+        cherriesCounter.text = "0";
+        metersCounter.text = "0";
     }
 
     private void Update()
@@ -53,7 +56,34 @@ public class PlayerControllerRunner : MonoBehaviour
         {
             SceneManager.LoadScene("LevelSelection");
         }
+
+        // Update meters and speed
+        ManageMeters();
+
+        // update camera limit
+        cameraLimit.transform.position = new Vector3(gameObject.transform.position.x, 0);
     }
+
+    private void ManageMeters()
+    {
+        float currentX = gameObject.transform.position.x;
+        int meters = (int) (currentX + 8.5f);
+        metersCounter.text = meters.ToString();
+
+        if (meters >= 250 && meters < 500)
+        {
+            speed = 8;
+        }
+        else if (meters >= 500 && meters < 1000)
+        {
+            speed = 10;
+        }
+        else if (meters >= 1000)
+        {
+            speed = 12;
+        }
+    }
+
 
     // Collision for collectable items
     private void OnTriggerEnter2D(Collider2D col)
@@ -63,7 +93,7 @@ public class PlayerControllerRunner : MonoBehaviour
         {
             Destroy(col.gameObject);
             cherries++;
-            scoreCounter.text = cherries.ToString();
+            cherriesCounter.text = cherries.ToString();
             Collect();
         }
     }

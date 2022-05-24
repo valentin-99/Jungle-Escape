@@ -156,11 +156,13 @@ MonoBehaviour:
   speed: 0
   jumpForce: 0
   hurtForce: 0
-  scoreCounter: {fileID: 0}
+  cherriesCounter: {fileID: 0}
+  metersCounter: {fileID: 0}
   footstep: {fileID: 3646660629150495690}
   bounce: {fileID: 3646660629150495685}
   collect: {fileID: 3646660629150495684}
   boink: {fileID: 3646660629150495691}
+  cameraLimit: {fileID: 0}
 --- !u!95 &3646660629150495688
 Animator:
   serializedVersion: 3
