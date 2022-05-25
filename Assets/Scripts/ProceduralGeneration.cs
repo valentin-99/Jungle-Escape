@@ -11,6 +11,7 @@ public class ProceduralGeneration : MonoBehaviourPunCallbacks
     [SerializeField] private TileBase groundTile, skyTile;
     [SerializeField] private Tilemap groundTilemap, skyTilemap;
     [SerializeField] private GameObject spawnPlayer;
+    [SerializeField] private GameObject ground;
 
     [Header("Sky")]
     [Range(0, 1)]
@@ -24,6 +25,10 @@ public class ProceduralGeneration : MonoBehaviourPunCallbacks
     {
         map = new int [width, height];
         Generation();
+
+        // activate tilemap collider with composite after terrain generation is done
+        TilemapCollider2D tilemapCollider2D = ground.GetComponent<TilemapCollider2D>();
+        tilemapCollider2D.enabled = true;
 
         // the ground needs to be rendered first, otherwise the map variable
         // will be empty when it is accessed from SpawnPlayer script

@@ -13,6 +13,7 @@ public class PlayerControllerMulti : MonoBehaviour
     private Animator anim;
     private Collider2D coll;
     private AudioListener audioListener;
+    private PhotonView view;
 
     private enum State { idle, run, jump, fallJump }
     private State state = State.idle;
@@ -26,15 +27,16 @@ public class PlayerControllerMulti : MonoBehaviour
     // lock control of jumping
     private bool jumpEnabled = false;
 
-    [HideInInspector] PhotonView view;
-
+    private void Awake()
+    {
+        view = GetComponent<PhotonView>();
+    }
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         coll = GetComponent<Collider2D>();
-        view = GetComponent<PhotonView>();
         audioListener = GetComponent<AudioListener>();
 
         if (view.IsMine)
