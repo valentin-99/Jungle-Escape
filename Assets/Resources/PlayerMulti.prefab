@@ -174,8 +174,8 @@ MonoBehaviour:
   ground:
     serializedVersion: 2
     m_Bits: 64
-  speed: 0
-  jumpForce: 0
+  speed: 6
+  jumpForce: 14
   footstep: {fileID: 5733321927281396490}
   bounce: {fileID: 114123426846902904}
 --- !u!81 &6722840512196271130

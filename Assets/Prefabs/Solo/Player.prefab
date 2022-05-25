@@ -150,16 +150,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81445fd444f29d142a576e602cac7028, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isClimbing: 0
+  onLadderTop: 0
+  onLadderBottom: 0
+  ladder: {fileID: 0}
   ground:
     serializedVersion: 2
     m_Bits: 64
   groundMarginsDown:
     serializedVersion: 2
     m_Bits: 128
-  speed: 0
-  jumpForce: 0
-  hurtForce: 0
+  speed: 6
+  jumpForce: 14
+  hurtForce: 6
   scoreCounter: {fileID: 0}
+  timerElapsed: {fileID: 0}
   footstep: {fileID: 460266149}
   bounce: {fileID: 8968715832028141719}
   collect: {fileID: 8968715832028141721}

@@ -33,9 +33,6 @@ public class PlayerControllerRunner : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         coll = GetComponent<Collider2D>();
-        speed = 6f;
-        jumpForce = 14f;
-        hurtForce = 6f;
         cherries = 0;
         cherriesCounter.text = "0";
         metersCounter.text = "0";

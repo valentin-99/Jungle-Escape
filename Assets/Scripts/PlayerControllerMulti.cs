@@ -26,7 +26,7 @@ public class PlayerControllerMulti : MonoBehaviour
     // lock control of jumping
     private bool jumpEnabled = false;
 
-    PhotonView view;
+    [HideInInspector] PhotonView view;
 
 
     private void Start()
@@ -47,9 +47,6 @@ public class PlayerControllerMulti : MonoBehaviour
             cvcam = vcam.GetComponent<CinemachineVirtualCamera>();
             cvcam.Follow = this.gameObject.transform;
         }
-
-        speed = 6f;
-        jumpForce = 14f;
     }
 
     private void Update()

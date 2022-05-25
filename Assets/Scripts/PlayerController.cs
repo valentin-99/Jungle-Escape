@@ -25,26 +25,27 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpForce;
     [SerializeField] private float hurtForce;
     [SerializeField] private Text scoreCounter;
+    [SerializeField] private Text timerElapsed;
     [SerializeField] private AudioSource footstep;
     [SerializeField] private AudioSource bounce;
     [SerializeField] private AudioSource collect;
     [SerializeField] private AudioSource boink;
 
-    private int cherries;
+    private int score;
 
     // lock control of jumping
     private bool jumpEnabled = false;
+
+    private float timeRemaining = 150;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         coll = GetComponent<Collider2D>();
-        speed = 6f;
-        jumpForce = 14f;
-        hurtForce = 6f;
-        cherries = 0;
+        score = 0;
         scoreCounter.text = "0";
+        timerElapsed.text = timeRemaining.ToString();
         gravity = rb.gravityScale;
     }
 
@@ -67,6 +68,24 @@ public class PlayerController : MonoBehaviour
         {
             SceneManager.LoadScene("LevelSelection");
         }
+
+        // update score text
+        scoreCounter.text = score.ToString();
+
+        HandleTimer();
+    }
+
+    private void HandleTimer()
+    {
+        if (timeRemaining > 0)
+        {
+            timeRemaining -= Time.deltaTime;
+            timerElapsed.text = ((int) timeRemaining).ToString();
+        }
+        else
+        {
+            SceneManager.LoadScene("LoseLevel");
+        }
     }
 
     // Collision for collectable items
@@ -76,8 +95,7 @@ public class PlayerController : MonoBehaviour
         if (col.CompareTag("Collectable"))
         {
             Destroy(col.gameObject);
-            cherries++;
-            scoreCounter.text = cherries.ToString();
+            score += 1000;
             Collect();
         }
     }
@@ -96,6 +114,15 @@ public class PlayerController : MonoBehaviour
                 enemy.UnableEnemyCollider();
                 enemy.EnemyDeath();
                 Jump();
+
+                if (string.Equals(enemy.GetType().Name, "FrogController"))
+                {
+                    score += 5000;
+                }
+                else if (string.Equals(enemy.GetType().Name, "EagleController"))
+                {
+                    score += 10000;
+                }
             }
 
             else

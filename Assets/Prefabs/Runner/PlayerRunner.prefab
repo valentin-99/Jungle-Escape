@@ -153,9 +153,9 @@ MonoBehaviour:
   ground:
     serializedVersion: 2
     m_Bits: 64
-  speed: 0
-  jumpForce: 0
-  hurtForce: 0
+  speed: 6
+  jumpForce: 14
+  hurtForce: 6
   cherriesCounter: {fileID: 0}
   metersCounter: {fileID: 0}
   footstep: {fileID: 3646660629150495690}
