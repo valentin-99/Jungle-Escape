@@ -11,6 +11,7 @@ public class ProceduralGeneration : MonoBehaviourPunCallbacks
     [SerializeField] private TileBase groundTile, skyTile;
     [SerializeField] private Tilemap groundTilemap, skyTilemap;
     [SerializeField] private GameObject spawnPlayer;
+    [SerializeField] private GameObject spawnCollectables;
     [SerializeField] private GameObject ground;
 
     [Header("Sky")]
@@ -31,7 +32,8 @@ public class ProceduralGeneration : MonoBehaviourPunCallbacks
         tilemapCollider2D.enabled = true;
 
         // the ground needs to be rendered first, otherwise the map variable
-        // will be empty when it is accessed from SpawnPlayer script
+        // will be empty when it is accessed from Spawn scripts
+        spawnCollectables.SetActive(true);
         spawnPlayer.SetActive(true);
     }
 

@@ -24,8 +24,16 @@ public class PlayerControllerMulti : MonoBehaviour
     [SerializeField] private AudioSource footstep;
     [SerializeField] private AudioSource bounce;
 
+    private GameObject canvas;
+    private Text scoreCounter;
+    private Text timerElapsed;
+
+    private int score;
+
     // lock control of jumping
     private bool jumpEnabled = false;
+
+    private float timeRemaining = 240;
 
     private void Awake()
     {
@@ -39,6 +47,13 @@ public class PlayerControllerMulti : MonoBehaviour
         coll = GetComponent<Collider2D>();
         audioListener = GetComponent<AudioListener>();
 
+        // find canvas and the texts
+        canvas = GameObject.Find("PlayerUI");
+        Transform scoreCounterTransform = canvas.transform.Find("ScoreCounter");
+        Transform timerElapsedTransform = canvas.transform.Find("TimerElapsed");
+        scoreCounter = scoreCounterTransform.GetComponent<Text>();
+        timerElapsed = timerElapsedTransform.GetComponent<Text>();
+
         if (view.IsMine)
         {
             audioListener.enabled = true;
@@ -48,7 +63,14 @@ public class PlayerControllerMulti : MonoBehaviour
             CinemachineVirtualCamera cvcam;
             cvcam = vcam.GetComponent<CinemachineVirtualCamera>();
             cvcam.Follow = this.gameObject.transform;
+
+            // initialize score
+            score = 0;
+            scoreCounter.text = "0";
         }
+
+        // initialize time left
+        timerElapsed.text = timeRemaining.ToString();
     }
 
     private void Update()
@@ -68,18 +90,53 @@ public class PlayerControllerMulti : MonoBehaviour
                 PhotonNetwork.Disconnect();
                 SceneManager.LoadScene("LevelSelection");
             }
+
+            // update score text
+            scoreCounter.text = score.ToString();
+        }
+
+        // same time left for all players
+        HandleTimer();
+    }
+
+    private void HandleTimer()
+    {
+        if (timeRemaining > 0)
+        {
+            timeRemaining -= Time.deltaTime;
+            timerElapsed.text = ((int)timeRemaining).ToString();
+        }
+        else
+        {
+            SceneManager.LoadScene("LoseLevel");
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        bool destroyObject = false;
+
         if (view.IsMine)
         {
+            // Collision between player and cherries
+            if (collision.CompareTag("Collectable"))
+            {
+                destroyObject = true;
+                score++;
+            }
+
             if (collision.gameObject.name == "FallingZone")
             {
                 PhotonNetwork.Disconnect();
                 SceneManager.LoadScene("LoseLevel");
             }
+        }
+
+        // destroy object for everyone
+        if (destroyObject)
+        {
+            Destroy(collision.gameObject);
+            destroyObject = false;
         }
     }
 
