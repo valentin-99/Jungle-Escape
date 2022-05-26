@@ -25,11 +25,12 @@ public class SpawnPlayer : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        Spawn();
+        Vector2 spawnPos = Spawn();
+        PhotonNetwork.Instantiate(player.name, spawnPos, Quaternion.identity);
     }
 
     // Spawn player on the top of the map
-    private void Spawn()
+    public Vector2 Spawn()
     {
         ProceduralGeneration pg = proceduralGeneration.GetComponent<ProceduralGeneration>();
 
@@ -51,9 +52,9 @@ public class SpawnPlayer : MonoBehaviour
         }
 
         int randomIdx = Random.Range(0, spawnArray.Count);
+        // position correction (+.5f, +2f)
         Vector2 spawnPos = new Vector2(spawnArray[randomIdx].X + .5f, spawnArray[randomIdx].Y + 2);
 
-        // render the player with correction (+.5f, +2f)
-        PhotonNetwork.Instantiate(player.name, spawnPos, Quaternion.identity);
+        return spawnPos;
     }
 }

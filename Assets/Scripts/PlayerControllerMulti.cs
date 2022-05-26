@@ -28,6 +28,8 @@ public class PlayerControllerMulti : MonoBehaviour
     private Text scoreCounter;
     private Text timerElapsed;
 
+    private GameObject spawnPlayer;
+
     private int score;
 
     // lock control of jumping
@@ -53,6 +55,9 @@ public class PlayerControllerMulti : MonoBehaviour
         Transform timerElapsedTransform = canvas.transform.Find("TimerElapsed");
         scoreCounter = scoreCounterTransform.GetComponent<Text>();
         timerElapsed = timerElapsedTransform.GetComponent<Text>();
+
+        // get spawn player script
+        spawnPlayer = GameObject.Find("SpawnPlayer");
 
         if (view.IsMine)
         {
@@ -127,8 +132,9 @@ public class PlayerControllerMulti : MonoBehaviour
 
             if (collision.gameObject.name == "FallingZone")
             {
-                PhotonNetwork.Disconnect();
-                SceneManager.LoadScene("LoseLevel");
+                SpawnPlayer sp = spawnPlayer.GetComponent<SpawnPlayer>();
+                Vector2 spawnPos = sp.Spawn();
+                transform.position = spawnPos;
             }
         }
 
