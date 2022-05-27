@@ -169,6 +169,13 @@ MonoBehaviour:
   bounce: {fileID: 8968715832028141719}
   collect: {fileID: 8968715832028141721}
   boink: {fileID: 8968715832028141722}
+  playerUI: {fileID: 0}
+  winCanvas: {fileID: 0}
+  loseCanvas: {fileID: 0}
+  scoreArr: 
+  timeArr: []
+  totalScoreArr: 
+  levelUnlocked: 0
 --- !u!95 &8968715832102991092
 Animator:
   serializedVersion: 3

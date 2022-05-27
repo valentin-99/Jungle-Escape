@@ -30,13 +30,24 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioSource bounce;
     [SerializeField] private AudioSource collect;
     [SerializeField] private AudioSource boink;
+    [SerializeField] private GameObject playerUI;
+    [SerializeField] private GameObject winCanvas;
+    [SerializeField] private GameObject loseCanvas;
 
-    private int score;
 
     // lock control of jumping
     private bool jumpEnabled = false;
 
+    private int score;
+    private int totalScore;
     private float timeRemaining = 150;
+
+    private bool hasFinished = false;
+
+    /*public int[] scoreArr;
+    public float[] timeArr;
+    public int[] totalScoreArr;
+    public int levelUnlocked;*/
 
     private void Start()
     {
@@ -55,7 +66,7 @@ public class PlayerController : MonoBehaviour
         {
             Climb();
         }
-        else if (state != State.hurt)
+        else if (state != State.hurt && !hasFinished)
         {
             Move();
         }
@@ -77,16 +88,46 @@ public class PlayerController : MonoBehaviour
 
     private void HandleTimer()
     {
-        if (timeRemaining > 0)
+        if (timeRemaining > 0 && !hasFinished)
         {
             timeRemaining -= Time.deltaTime;
             timerElapsed.text = ((int) timeRemaining).ToString();
         }
-        else
+        else if (timeRemaining <= 0)
         {
-            SceneManager.LoadScene("LoseLevel");
+            hasFinished = true;
+            rb.bodyType = RigidbodyType2D.Static;
+
+            playerUI.SetActive(false);
+            loseCanvas.SetActive(true);
+            // TODO make player rb static.
+            Transform scoreCounterTransform = loseCanvas.transform.Find("ScoreCounter");
+            Transform timerElapsedTransform = loseCanvas.transform.Find("TimerElapsed");
+            Transform bestScoreCounterTransform = loseCanvas.transform.Find("BestScoreCounter");
+            Text scoreWin = scoreCounterTransform.GetComponent<Text>();
+            Text timerWin = timerElapsedTransform.GetComponent<Text>();
+            Text bestScoreWin = bestScoreCounterTransform.GetComponent<Text>();
+
+            scoreWin.text = score.ToString();
+            timerWin.text = ((int)timeRemaining).ToString();
+            // TOOD get persistent data
+            //bestScoreWin.text = total.ToString();
         }
     }
+
+    // HAPPENS WHEN YOU DIE
+/*    private void HandleGameData()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        string sceneName = currentScene.name;
+
+        if (sceneName == "Level1")
+        {
+            // CHECK IF CURRENT SCORE > LAST SCORE
+            scoreArr[0] = score;
+            timeArr[0] = score;
+        }
+    }*/
 
     // Collision for collectable items
     private void OnTriggerEnter2D(Collider2D col)
@@ -97,6 +138,52 @@ public class PlayerController : MonoBehaviour
             Destroy(col.gameObject);
             score += 1000;
             Collect();
+        }
+
+        if (col.gameObject.name == "FinishFlag")
+        {
+            hasFinished = true;
+            rb.bodyType = RigidbodyType2D.Static;
+
+            playerUI.SetActive(false);
+            winCanvas.SetActive(true);
+            // TODO make player rb static.
+            Transform scoreCounterTransform = winCanvas.transform.Find("ScoreCounter");
+            Transform timerElapsedTransform = winCanvas.transform.Find("TimerElapsed");
+            Transform totalCounterTransform = winCanvas.transform.Find("TotalCounter");
+            Transform bestScoreCounterTransform = winCanvas.transform.Find("BestScoreCounter");
+            Text scoreWin = scoreCounterTransform.GetComponent<Text>();
+            Text timerWin = timerElapsedTransform.GetComponent<Text>();
+            Text totalWin = totalCounterTransform.GetComponent<Text>();
+            Text bestScoreWin = bestScoreCounterTransform.GetComponent<Text>();
+
+            scoreWin.text = score.ToString();
+            timerWin.text = ((int)timeRemaining).ToString();
+            int total = score * ((int)timeRemaining);
+            totalWin.text = total.ToString();
+            // TOOD get/set persistent data
+            bestScoreWin.text = total.ToString();
+        }
+
+
+        if (col.gameObject.name == "FallingZone")
+        {
+            hasFinished = true;
+            rb.bodyType = RigidbodyType2D.Static;
+
+            playerUI.SetActive(false);
+            loseCanvas.SetActive(true);
+            Transform scoreCounterTransform = loseCanvas.transform.Find("ScoreCounter");
+            Transform timerElapsedTransform = loseCanvas.transform.Find("TimerElapsed");
+            Transform bestScoreCounterTransform = loseCanvas.transform.Find("BestScoreCounter");
+            Text scoreWin = scoreCounterTransform.GetComponent<Text>();
+            Text timerWin = timerElapsedTransform.GetComponent<Text>();
+            Text bestScoreWin = bestScoreCounterTransform.GetComponent<Text>();
+
+            scoreWin.text = score.ToString();
+            timerWin.text = ((int)timeRemaining).ToString();
+            // TOOD get persistent data
+            //bestScoreWin.text = total.ToString();
         }
     }
 
