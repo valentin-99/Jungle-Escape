@@ -163,6 +163,8 @@ MonoBehaviour:
   collect: {fileID: 3646660629150495684}
   boink: {fileID: 3646660629150495691}
   cameraLimit: {fileID: 0}
+  runnerUI: {fileID: 0}
+  summaryCanvas: {fileID: 0}
 --- !u!95 &3646660629150495688
 Animator:
   serializedVersion: 3

@@ -97,6 +97,7 @@ public class PlayerController : MonoBehaviour
         {
             hasFinished = true;
             rb.bodyType = RigidbodyType2D.Static;
+            anim.enabled = false;
 
             playerUI.SetActive(false);
             loseCanvas.SetActive(true);
@@ -144,6 +145,7 @@ public class PlayerController : MonoBehaviour
         {
             hasFinished = true;
             rb.bodyType = RigidbodyType2D.Static;
+            anim.enabled = false;
 
             playerUI.SetActive(false);
             winCanvas.SetActive(true);
@@ -170,6 +172,7 @@ public class PlayerController : MonoBehaviour
         {
             hasFinished = true;
             rb.bodyType = RigidbodyType2D.Static;
+            anim.enabled = false;
 
             playerUI.SetActive(false);
             loseCanvas.SetActive(true);

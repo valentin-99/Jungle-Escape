@@ -24,9 +24,12 @@ public class PlayerControllerRunner : MonoBehaviour
     [SerializeField] private AudioSource collect;
     [SerializeField] private AudioSource boink;
     [SerializeField] private Transform cameraLimit;
+    [SerializeField] private GameObject runnerUI;
+    [SerializeField] private GameObject summaryCanvas;
 
     private int cherries;
     private bool startGame = false;
+    private bool hasFinished = false;
 
     private void Start()
     {
@@ -40,7 +43,7 @@ public class PlayerControllerRunner : MonoBehaviour
 
     private void Update()
     {
-        if (state != State.hurt)
+        if (state != State.hurt && !hasFinished)
         {
             Move();
         }
@@ -92,6 +95,27 @@ public class PlayerControllerRunner : MonoBehaviour
             cherries++;
             cherriesCounter.text = cherries.ToString();
             Collect();
+        }
+
+        if (col.gameObject.name == "FallingZone(Clone)")
+        {
+            hasFinished = true;
+            rb.bodyType = RigidbodyType2D.Static;
+            anim.enabled = false;
+
+            runnerUI.SetActive(false);
+            summaryCanvas.SetActive(true);
+            Transform cherriesCounterTransform = summaryCanvas.transform.Find("CherriesCounter");
+            Transform metersCounterTransform = summaryCanvas.transform.Find("MetersCounter");
+            Transform recordTransform = summaryCanvas.transform.Find("LongestDistanceCounter");
+            Text cherriesText = cherriesCounterTransform.GetComponent<Text>();
+            Text metersText = metersCounterTransform.GetComponent<Text>();
+            Text recordText = recordTransform.GetComponent<Text>();
+
+            cherriesText.text = cherries.ToString();
+            metersText.text = metersCounter.text;
+            // TOOD get persistent data
+            recordText.text = metersCounter.text;
         }
     }
 
