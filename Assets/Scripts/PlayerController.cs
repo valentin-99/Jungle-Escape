@@ -34,7 +34,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject winCanvas;
     [SerializeField] private GameObject loseCanvas;
 
-
     // lock control of jumping
     private bool jumpEnabled = false;
 
@@ -44,10 +43,9 @@ public class PlayerController : MonoBehaviour
 
     private bool hasFinished = false;
 
-    /*public int[] scoreArr;
-    public float[] timeArr;
-    public int[] totalScoreArr;
-    public int levelUnlocked;*/
+    [HideInInspector] public int score1, score2, score3, score4, score5, score6;
+    [HideInInspector] public int time1, time2, time3, time4, time5, time6;
+    [HideInInspector] public int record1, record2, record3, record4, record5, record6;
 
     private void Start()
     {
@@ -105,30 +103,238 @@ public class PlayerController : MonoBehaviour
             Transform scoreCounterTransform = loseCanvas.transform.Find("ScoreCounter");
             Transform timerElapsedTransform = loseCanvas.transform.Find("TimerElapsed");
             Transform bestScoreCounterTransform = loseCanvas.transform.Find("BestScoreCounter");
-            Text scoreWin = scoreCounterTransform.GetComponent<Text>();
-            Text timerWin = timerElapsedTransform.GetComponent<Text>();
-            Text bestScoreWin = bestScoreCounterTransform.GetComponent<Text>();
+            Text scoreLose = scoreCounterTransform.GetComponent<Text>();
+            Text timerLose = timerElapsedTransform.GetComponent<Text>();
+            Text bestScoreLose = bestScoreCounterTransform.GetComponent<Text>();
 
-            scoreWin.text = score.ToString();
-            timerWin.text = ((int)timeRemaining).ToString();
-            // TOOD get persistent data
-            //bestScoreWin.text = total.ToString();
+            scoreLose.text = score.ToString();
+            timerLose.text = ((int)timeRemaining).ToString();
+
+            GetHighScoreLose(bestScoreLose);
         }
     }
 
-    // HAPPENS WHEN YOU DIE
-/*    private void HandleGameData()
+    private void GetHighScoreLose(Text bestScore)
     {
+        // if the file doesn't exist
+        if (SaveLoadSystem.LoadSoloData() == null)
+        {
+            bestScore.text = "0";
+        }
+        else
+        {
+            Scene currentScene = SceneManager.GetActiveScene();
+            string sceneName = currentScene.name;
+            SoloData data = SaveLoadSystem.LoadSoloData();
+            int best = 0;
+
+            switch (sceneName)
+            {
+                case "Level1":
+                    best = data.record1;
+                    break;
+                case "Level2":
+                    best = data.record2;
+                    break;
+                case "Level3":
+                    best = data.record3;
+                    break;
+                case "Level4":
+                    best = data.record4;
+                    break;
+                case "Level5":
+                    best = data.record5;
+                    break;
+                case "Level6":
+                    best = data.record6;
+                    break;
+                default:
+                    break;
+            }
+
+            bestScore.text = best.ToString();
+        }
+    }
+    private void GetSetHighScoreWin(Text bestScore, int total)
+    {
+        // Get current scene
         Scene currentScene = SceneManager.GetActiveScene();
         string sceneName = currentScene.name;
 
-        if (sceneName == "Level1")
+        int bestScoreData = 0;
+        // if file doesn't exist
+        if (SaveLoadSystem.LoadSoloData() == null)
         {
-            // CHECK IF CURRENT SCORE > LAST SCORE
-            scoreArr[0] = score;
-            timeArr[0] = score;
+            bestScore.text = "0";
         }
-    }*/
+        // if file exist
+        else
+        {
+            // load the data and assign the best score
+            SoloData data = SaveLoadSystem.LoadSoloData();
+            switch (sceneName)
+            {
+                case "Level1":
+                    bestScoreData = data.record1;
+                    break;
+                case "Level2":
+                    bestScoreData = data.record2;
+                    break;
+                case "Level3":
+                    bestScoreData = data.record3;
+                    break;
+                case "Level4":
+                    bestScoreData = data.record4;
+                    break;
+                case "Level5":
+                    bestScoreData = data.record5;
+                    break;
+                case "Level6":
+                    bestScoreData = data.record6;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // if current score is higher, update best score and the other datas
+        if (total > bestScoreData)
+        {
+            SoloData data = SaveLoadSystem.LoadSoloData();
+            switch (sceneName)
+            {
+                case "Level1":
+                    score1 = score;
+                    score2 = data.score2;
+                    score3 = data.score3;
+                    score4 = data.score4;
+                    score5 = data.score5;
+                    score6 = data.score6;
+                    time1 = (int)timeRemaining;
+                    time2 = data.time2;
+                    time3 = data.time3;
+                    time4 = data.time4;
+                    time5 = data.time5;
+                    time6 = data.time6;
+                    record1 = total;
+                    record2 = data.record2;
+                    record3 = data.record3;
+                    record4 = data.record4;
+                    record5 = data.record5;
+                    record6 = data.record6;
+                    break;
+                case "Level2":
+                    score1 = data.score1;
+                    score2 = score;
+                    score3 = data.score3;
+                    score4 = data.score4;
+                    score5 = data.score5;
+                    score6 = data.score6;
+                    time1 = data.time1;
+                    time2 = (int)timeRemaining;
+                    time3 = data.time3;
+                    time4 = data.time4;
+                    time5 = data.time5;
+                    time6 = data.time6;
+                    record1 = data.record1;
+                    record2 = total;
+                    record3 = data.record3;
+                    record4 = data.record4;
+                    record5 = data.record5;
+                    record6 = data.record6;
+                    break;
+                case "Level3":
+                    score1 = data.score1;
+                    score2 = data.score2;
+                    score3 = score;
+                    score4 = data.score4;
+                    score5 = data.score5;
+                    score6 = data.score6;
+                    time1 = data.time1;
+                    time2 = data.time2;
+                    time3 = (int)timeRemaining;
+                    time4 = data.time4;
+                    time5 = data.time5;
+                    time6 = data.time6;
+                    record1 = data.record1;
+                    record2 = data.record2;
+                    record3 = total;
+                    record4 = data.record4;
+                    record5 = data.record5;
+                    record6 = data.record6;
+                    break;
+                case "Level4":
+                    score1 = data.score1;
+                    score2 = data.score2;
+                    score3 = data.score3;
+                    score4 = score;
+                    score5 = data.score5;
+                    score6 = data.score6;
+                    time1 = data.time1;
+                    time2 = data.time2;
+                    time3 = data.time3;
+                    time4 = (int)timeRemaining;
+                    time5 = data.time5;
+                    time6 = data.time6;
+                    record1 = data.record1;
+                    record2 = data.record2;
+                    record3 = data.record3;
+                    record4 = total;
+                    record5 = data.record5;
+                    record6 = data.record6;
+                    break;
+                case "Level5":
+                    score1 = data.score1;
+                    score2 = data.score2;
+                    score3 = data.score3;
+                    score4 = data.score4;
+                    score5 = score;
+                    score6 = data.score6;
+                    time1 = data.time1;
+                    time2 = data.time2;
+                    time3 = data.time3;
+                    time4 = data.time4;
+                    time5 = (int)timeRemaining;
+                    time6 = data.time6;
+                    record1 = data.record1;
+                    record2 = data.record2;
+                    record3 = data.record3;
+                    record4 = data.record4;
+                    record5 = total;
+                    record6 = data.record6;
+                    break;
+                case "Level6":
+                    score1 = data.score1;
+                    score2 = data.score2;
+                    score3 = data.score3;
+                    score4 = data.score4;
+                    score5 = data.score5;
+                    score6 = score;
+                    time1 = data.time1;
+                    time2 = data.time2;
+                    time3 = data.time3;
+                    time4 = data.time4;
+                    time5 = data.time5;
+                    time6 = (int)timeRemaining;
+                    record1 = data.record1;
+                    record2 = data.record2;
+                    record3 = data.record3;
+                    record4 = data.record4;
+                    record5 = data.record5;
+                    record6 = total;
+                    break;
+                default:
+                    break;
+            }
+
+            SaveLoadSystem.SaveSoloData(this);
+            bestScore.text = total.ToString();
+        }
+        else
+        {
+            bestScore.text = bestScoreData.ToString();
+        }
+    }
 
     // Collision for collectable items
     private void OnTriggerEnter2D(Collider2D col)
@@ -163,8 +369,8 @@ public class PlayerController : MonoBehaviour
             timerWin.text = ((int)timeRemaining).ToString();
             int total = score * ((int)timeRemaining);
             totalWin.text = total.ToString();
-            // TOOD get/set persistent data
-            bestScoreWin.text = total.ToString();
+
+            GetSetHighScoreWin(bestScoreWin, total);
         }
 
 
@@ -179,14 +385,15 @@ public class PlayerController : MonoBehaviour
             Transform scoreCounterTransform = loseCanvas.transform.Find("ScoreCounter");
             Transform timerElapsedTransform = loseCanvas.transform.Find("TimerElapsed");
             Transform bestScoreCounterTransform = loseCanvas.transform.Find("BestScoreCounter");
-            Text scoreWin = scoreCounterTransform.GetComponent<Text>();
-            Text timerWin = timerElapsedTransform.GetComponent<Text>();
-            Text bestScoreWin = bestScoreCounterTransform.GetComponent<Text>();
+            Text scoreLose = scoreCounterTransform.GetComponent<Text>();
+            Text timerLose = timerElapsedTransform.GetComponent<Text>();
+            Text bestScoreLose = bestScoreCounterTransform.GetComponent<Text>();
 
-            scoreWin.text = score.ToString();
-            timerWin.text = ((int)timeRemaining).ToString();
+            scoreLose.text = score.ToString();
+            timerLose.text = ((int)timeRemaining).ToString();
+
             // TOOD get persistent data
-            //bestScoreWin.text = total.ToString();
+            GetHighScoreLose(bestScoreLose);
         }
     }
 

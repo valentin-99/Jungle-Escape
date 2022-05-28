@@ -8,8 +8,29 @@ public static class SaveLoadSystem
     {
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/solo.out";
-        
-        // TRB SA CREEZ VARIABILA SI PENTRU NIVELUL CURENT, SAU NU, VERIFIC DACA
-        // VARIABILA AIA ARRAY ESTE GOALA PE POZITIA N.
+        FileStream stream = new FileStream(path, FileMode.Create);
+        SoloData data = new SoloData(player);
+
+        formatter.Serialize(stream, data);
+        stream.Close();
+    }
+
+    public static SoloData LoadSoloData()
+    {
+        string path = Application.persistentDataPath + "/solo.out";
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            SoloData data = formatter.Deserialize(stream) as SoloData;
+            stream.Close();
+
+            return data;
+        }
+        else
+        {
+            return null;
+        }
     }
 }

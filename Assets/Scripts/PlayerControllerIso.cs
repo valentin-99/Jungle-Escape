@@ -35,7 +35,6 @@ public class PlayerControllerIso : MonoBehaviour
     // Level selection
     private void OnTriggerEnter2D(Collider2D col)
     {
-        // TODO Check for each if level unlocked is N
         if (col.CompareTag("solo1"))
         {
             SceneManager.LoadScene("Level1");
