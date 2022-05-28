@@ -28,8 +28,12 @@ public class PlayerControllerRunner : MonoBehaviour
     [SerializeField] private GameObject summaryCanvas;
 
     private int cherries;
+    private int meters;
     private bool startGame = false;
     private bool hasFinished = false;
+
+    [HideInInspector] public int score1, score2, score3;
+    [HideInInspector] public int record1, record2, record3;
 
     private void Start()
     {
@@ -67,7 +71,7 @@ public class PlayerControllerRunner : MonoBehaviour
     private void ManageMeters()
     {
         float currentX = gameObject.transform.position.x;
-        int meters = (int) (currentX + 8.5f);
+        meters = (int) (currentX + 8.5f);
         metersCounter.text = meters.ToString();
 
         if (meters >= 250 && meters < 500)
@@ -84,6 +88,86 @@ public class PlayerControllerRunner : MonoBehaviour
         }
     }
 
+    private void GetSetHighScore(Text bestScore)
+    {
+        // Get current scene
+        Scene currentScene = SceneManager.GetActiveScene();
+        string sceneName = currentScene.name;
+
+        int bestScoreData = 0;
+        // if file doesn't exist
+        if (SaveLoadSystem.LoadRunnerData() == null)
+        {
+            bestScore.text = "0";
+        }
+        // if file exist
+        else
+        {
+            // load the data and assign the best score
+            RunnerData data = SaveLoadSystem.LoadRunnerData();
+            switch (sceneName)
+            {
+                case "RunnerDay":
+                    bestScoreData = data.record1;
+                    break;
+                case "RunnerSunset":
+                    bestScoreData = data.record2;
+                    break;
+                case "RunnerNight":
+                    bestScoreData = data.record3;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // if current score is higher, update best score and the other datas
+        if (meters > bestScoreData)
+        {
+            // if the file doesn't exist we will create one
+            if (SaveLoadSystem.LoadRunnerData() == null)
+            {
+                SaveLoadSystem.SaveRunnerData(this);
+            }
+            RunnerData data = SaveLoadSystem.LoadRunnerData();
+            switch (sceneName)
+            {
+                case "RunnerDay":
+                    score1 = cherries;
+                    score2 = data.score2;
+                    score3 = data.score3;
+                    record1 = meters;
+                    record2 = data.record2;
+                    record3 = data.record3;
+                    break;
+                case "RunnerSunset":
+                    score1 = data.score1;
+                    score2 = cherries;
+                    score3 = data.score3;
+                    record1 = data.record1;
+                    record2 = meters;
+                    record3 = data.record3;
+                    break;
+                case "RunnerNight":
+                    score1 = data.score1;
+                    score2 = data.score2;
+                    score3 = cherries;
+                    record1 = data.record1;
+                    record2 = data.record2;
+                    record3 = meters;
+                    break;
+                default:
+                    break;
+            }
+
+            SaveLoadSystem.SaveRunnerData(this);
+            bestScore.text = meters.ToString();
+        }
+        else
+        {
+            bestScore.text = bestScoreData.ToString();
+        }
+    }
 
     // Collision for collectable items
     private void OnTriggerEnter2D(Collider2D col)
@@ -115,7 +199,7 @@ public class PlayerControllerRunner : MonoBehaviour
             cherriesText.text = cherries.ToString();
             metersText.text = metersCounter.text;
             // TOOD get persistent data
-            recordText.text = metersCounter.text;
+            GetSetHighScore(recordText);
         }
     }
 

@@ -200,6 +200,11 @@ public class PlayerController : MonoBehaviour
         // if current score is higher, update best score and the other datas
         if (total > bestScoreData)
         {
+            // if the file doesn't exist we will create one
+            if (SaveLoadSystem.LoadSoloData() == null)
+            {
+                SaveLoadSystem.SaveSoloData(this);
+            }
             SoloData data = SaveLoadSystem.LoadSoloData();
             switch (sceneName)
             {
@@ -355,7 +360,6 @@ public class PlayerController : MonoBehaviour
 
             playerUI.SetActive(false);
             winCanvas.SetActive(true);
-            // TODO make player rb static.
             Transform scoreCounterTransform = winCanvas.transform.Find("ScoreCounter");
             Transform timerElapsedTransform = winCanvas.transform.Find("TimerElapsed");
             Transform totalCounterTransform = winCanvas.transform.Find("TotalCounter");

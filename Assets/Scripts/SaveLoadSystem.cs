@@ -33,4 +33,34 @@ public static class SaveLoadSystem
             return null;
         }
     }
+
+    public static void SaveRunnerData(PlayerControllerRunner player)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        string path = Application.persistentDataPath + "/runner.out";
+        FileStream stream = new FileStream(path, FileMode.Create);
+        RunnerData data = new RunnerData(player);
+
+        formatter.Serialize(stream, data);
+        stream.Close();
+    }
+
+    public static RunnerData LoadRunnerData()
+    {
+        string path = Application.persistentDataPath + "/runner.out";
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            RunnerData data = formatter.Deserialize(stream) as RunnerData;
+            stream.Close();
+
+            return data;
+        }
+        else
+        {
+            return null;
+        }
+    }
 }
