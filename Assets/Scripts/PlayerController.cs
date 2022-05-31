@@ -43,8 +43,6 @@ public class PlayerController : MonoBehaviour
 
     private bool hasFinished = false;
 
-    [HideInInspector] public int score1, score2, score3, score4, score5, score6;
-    [HideInInspector] public int time1, time2, time3, time4, time5, time6;
     [HideInInspector] public int record1, record2, record3, record4, record5, record6;
 
     private void Start()
@@ -209,18 +207,6 @@ public class PlayerController : MonoBehaviour
             switch (sceneName)
             {
                 case "Level1":
-                    score1 = score;
-                    score2 = data.score2;
-                    score3 = data.score3;
-                    score4 = data.score4;
-                    score5 = data.score5;
-                    score6 = data.score6;
-                    time1 = (int)timeRemaining;
-                    time2 = data.time2;
-                    time3 = data.time3;
-                    time4 = data.time4;
-                    time5 = data.time5;
-                    time6 = data.time6;
                     record1 = total;
                     record2 = data.record2;
                     record3 = data.record3;
@@ -229,18 +215,6 @@ public class PlayerController : MonoBehaviour
                     record6 = data.record6;
                     break;
                 case "Level2":
-                    score1 = data.score1;
-                    score2 = score;
-                    score3 = data.score3;
-                    score4 = data.score4;
-                    score5 = data.score5;
-                    score6 = data.score6;
-                    time1 = data.time1;
-                    time2 = (int)timeRemaining;
-                    time3 = data.time3;
-                    time4 = data.time4;
-                    time5 = data.time5;
-                    time6 = data.time6;
                     record1 = data.record1;
                     record2 = total;
                     record3 = data.record3;
@@ -249,18 +223,6 @@ public class PlayerController : MonoBehaviour
                     record6 = data.record6;
                     break;
                 case "Level3":
-                    score1 = data.score1;
-                    score2 = data.score2;
-                    score3 = score;
-                    score4 = data.score4;
-                    score5 = data.score5;
-                    score6 = data.score6;
-                    time1 = data.time1;
-                    time2 = data.time2;
-                    time3 = (int)timeRemaining;
-                    time4 = data.time4;
-                    time5 = data.time5;
-                    time6 = data.time6;
                     record1 = data.record1;
                     record2 = data.record2;
                     record3 = total;
@@ -269,18 +231,6 @@ public class PlayerController : MonoBehaviour
                     record6 = data.record6;
                     break;
                 case "Level4":
-                    score1 = data.score1;
-                    score2 = data.score2;
-                    score3 = data.score3;
-                    score4 = score;
-                    score5 = data.score5;
-                    score6 = data.score6;
-                    time1 = data.time1;
-                    time2 = data.time2;
-                    time3 = data.time3;
-                    time4 = (int)timeRemaining;
-                    time5 = data.time5;
-                    time6 = data.time6;
                     record1 = data.record1;
                     record2 = data.record2;
                     record3 = data.record3;
@@ -289,18 +239,6 @@ public class PlayerController : MonoBehaviour
                     record6 = data.record6;
                     break;
                 case "Level5":
-                    score1 = data.score1;
-                    score2 = data.score2;
-                    score3 = data.score3;
-                    score4 = data.score4;
-                    score5 = score;
-                    score6 = data.score6;
-                    time1 = data.time1;
-                    time2 = data.time2;
-                    time3 = data.time3;
-                    time4 = data.time4;
-                    time5 = (int)timeRemaining;
-                    time6 = data.time6;
                     record1 = data.record1;
                     record2 = data.record2;
                     record3 = data.record3;
@@ -309,18 +247,6 @@ public class PlayerController : MonoBehaviour
                     record6 = data.record6;
                     break;
                 case "Level6":
-                    score1 = data.score1;
-                    score2 = data.score2;
-                    score3 = data.score3;
-                    score4 = data.score4;
-                    score5 = data.score5;
-                    score6 = score;
-                    time1 = data.time1;
-                    time2 = data.time2;
-                    time3 = data.time3;
-                    time4 = data.time4;
-                    time5 = data.time5;
-                    time6 = (int)timeRemaining;
                     record1 = data.record1;
                     record2 = data.record2;
                     record3 = data.record3;

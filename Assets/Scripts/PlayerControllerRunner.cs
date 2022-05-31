@@ -32,7 +32,6 @@ public class PlayerControllerRunner : MonoBehaviour
     private bool startGame = false;
     private bool hasFinished = false;
 
-    [HideInInspector] public int score1, score2, score3;
     [HideInInspector] public int record1, record2, record3;
 
     private void Start()
@@ -133,25 +132,16 @@ public class PlayerControllerRunner : MonoBehaviour
             switch (sceneName)
             {
                 case "RunnerDay":
-                    score1 = cherries;
-                    score2 = data.score2;
-                    score3 = data.score3;
                     record1 = meters;
                     record2 = data.record2;
                     record3 = data.record3;
                     break;
                 case "RunnerSunset":
-                    score1 = data.score1;
-                    score2 = cherries;
-                    score3 = data.score3;
                     record1 = data.record1;
                     record2 = meters;
                     record3 = data.record3;
                     break;
                 case "RunnerNight":
-                    score1 = data.score1;
-                    score2 = data.score2;
-                    score3 = cherries;
                     record1 = data.record1;
                     record2 = data.record2;
                     record3 = meters;
