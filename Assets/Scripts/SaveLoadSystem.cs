@@ -63,4 +63,34 @@ public static class SaveLoadSystem
             return null;
         }
     }
+
+    public static void SaveVolumeData(MenuInteraction settings)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        string path = Application.persistentDataPath + "/settings.out";
+        FileStream stream = new FileStream(path, FileMode.Create);
+        VolumeData data = new VolumeData(settings);
+
+        formatter.Serialize(stream, data);
+        stream.Close();
+    }
+
+    public static VolumeData LoadVolumeData()
+    {
+        string path = Application.persistentDataPath + "/settings.out";
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            VolumeData data = formatter.Deserialize(stream) as VolumeData;
+            stream.Close();
+
+            return data;
+        }
+        else
+        {
+            return null;
+        }
+    }
 }

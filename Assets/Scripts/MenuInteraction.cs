@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 using System.IO;
 
 public class MenuInteraction : MonoBehaviour
@@ -10,6 +11,34 @@ public class MenuInteraction : MonoBehaviour
     [SerializeField] GameObject menu;
     [SerializeField] GameObject help;
     [SerializeField] GameObject highscore;
+    [SerializeField] GameObject settings;
+
+    [SerializeField] AudioMixer audioMixer;
+    [SerializeField] Slider musicSlider;
+    [SerializeField] Slider sfxSlider;
+    [HideInInspector] public float valueMusic;
+    [HideInInspector] public float valueSFX;
+
+    private void Start()
+    {
+        if (SaveLoadSystem.LoadVolumeData() == null)
+        {
+            musicSlider.value = musicSlider.maxValue;
+            sfxSlider.value = sfxSlider.maxValue;
+        }
+        else
+        {
+            VolumeData data = SaveLoadSystem.LoadVolumeData();
+
+            // set volumes
+            audioMixer.SetFloat("MusicVolume", data.valueMusic);
+            audioMixer.SetFloat("SFXVolume", data.valueSFX);
+
+            // set sliders values;
+            musicSlider.value = Mathf.Pow(10, data.valueMusic / 20);
+            sfxSlider.value = Mathf.Pow(10, data.valueSFX / 20);
+        }
+    }
 
     private void Update()
     {
@@ -106,6 +135,38 @@ public class MenuInteraction : MonoBehaviour
         }
     }
 
+    public void EnableSettings()
+    {
+        settings.SetActive(true);
+        menu.SetActive(false);
+    }
+
+    public void SetVolumeMusic (float volume)
+    {
+        if (SaveLoadSystem.LoadVolumeData() == null)
+        {
+            SaveLoadSystem.SaveVolumeData(this);
+        }
+
+        valueMusic = Mathf.Log10(volume) * 20;
+        audioMixer.SetFloat("MusicVolume", valueMusic);
+
+        SaveLoadSystem.SaveVolumeData(this);
+    }
+
+    public void SetVolumeSFX(float volume)
+    {
+        if (SaveLoadSystem.LoadVolumeData() == null)
+        {
+            SaveLoadSystem.SaveVolumeData(this);
+        }
+
+        valueSFX = Mathf.Log10(volume) * 20;
+        audioMixer.SetFloat("SFXVolume", valueSFX);
+
+        SaveLoadSystem.SaveVolumeData(this);
+    }
+
     public void Confirm()
     {
         if (help.activeInHierarchy)
@@ -117,6 +178,11 @@ public class MenuInteraction : MonoBehaviour
         {
             menu.SetActive(true);
             highscore.SetActive(false);
+        }
+        else if (settings.activeInHierarchy)
+        {
+            menu.SetActive(true);
+            settings.SetActive(false);
         }
     }
 
