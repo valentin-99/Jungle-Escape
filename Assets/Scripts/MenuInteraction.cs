@@ -19,8 +19,12 @@ public class MenuInteraction : MonoBehaviour
     [HideInInspector] public float valueMusic;
     [HideInInspector] public float valueSFX;
 
+    Resolution[] resolutions;
+    [SerializeField] Dropdown resolutionDropdown;
+
     private void Start()
     {
+        // Load volume datas
         if (SaveLoadSystem.LoadVolumeData() == null)
         {
             musicSlider.value = musicSlider.maxValue;
@@ -30,14 +34,38 @@ public class MenuInteraction : MonoBehaviour
         {
             VolumeData data = SaveLoadSystem.LoadVolumeData();
 
-            // set volumes
+            // Set volumes
             audioMixer.SetFloat("MusicVolume", data.valueMusic);
             audioMixer.SetFloat("SFXVolume", data.valueSFX);
 
-            // set sliders values;
+            // Set sliders values;
             musicSlider.value = Mathf.Pow(10, data.valueMusic / 20);
             sfxSlider.value = Mathf.Pow(10, data.valueSFX / 20);
         }
+
+        // Get available resolutions
+        resolutions = Screen.resolutions;
+        resolutionDropdown.ClearOptions();
+
+        int currentResolution = 0;
+        List<string> options = new List<string>();
+        for (int i = 0; i < resolutions.Length; i++)
+        {
+            options.Add(resolutions[i].width + " x " + resolutions[i].height);
+
+            // Get current resolution
+            if (resolutions[i].width == Screen.currentResolution.width &&
+                resolutions[i].height == Screen.currentResolution.height)
+            {
+                currentResolution = i;
+            }
+        }
+        
+        // Load the options
+        resolutionDropdown.AddOptions(options);
+        // Load current resolution
+        resolutionDropdown.value = currentResolution;
+        resolutionDropdown.RefreshShownValue();
     }
 
     private void Update()
@@ -165,6 +193,17 @@ public class MenuInteraction : MonoBehaviour
         audioMixer.SetFloat("SFXVolume", valueSFX);
 
         SaveLoadSystem.SaveVolumeData(this);
+    }
+
+    public void SetFullScreen(bool isFullScreen)
+    {
+        Screen.fullScreen = isFullScreen;
+    }
+
+    public void SetResolution(int index)
+    {
+        Resolution resolution = resolutions[index];
+        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
     }
 
     public void Confirm()
