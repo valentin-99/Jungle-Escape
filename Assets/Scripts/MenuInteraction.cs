@@ -22,6 +22,9 @@ public class MenuInteraction : MonoBehaviour
     Resolution[] resolutions;
     [SerializeField] Dropdown resolutionDropdown;
 
+    [SerializeField] GameObject loading;
+    [SerializeField] Slider loadingSlider;
+
     private void Start()
     {
         // Load volume datas
@@ -90,12 +93,14 @@ public class MenuInteraction : MonoBehaviour
             File.Delete(pathRunner);
         }
 
-        SceneManager.LoadScene("LevelSelection");
+        //SceneManager.LoadScene("LevelSelection");
+        StartCoroutine(LoadSceneAsync("LevelSelection"));
     }
 
     public void LoadGame()
     {
-        SceneManager.LoadScene("LevelSelection");
+        //SceneManager.LoadScene("LevelSelection");
+        StartCoroutine(LoadSceneAsync("LevelSelection"));
     }
 
     public void EnableHelp()
@@ -204,6 +209,21 @@ public class MenuInteraction : MonoBehaviour
     {
         Resolution resolution = resolutions[index];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+    }
+
+    IEnumerator LoadSceneAsync (string scene)
+    {
+        AsyncOperation op = SceneManager.LoadSceneAsync(scene);
+
+        loading.SetActive(true);
+        menu.SetActive(false);
+
+        while (!op.isDone)
+        {
+            float progress = Mathf.Clamp01(op.progress / .9f);
+            loadingSlider.value = progress;
+            yield return null;
+        }
     }
 
     public void Confirm()
