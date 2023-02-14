@@ -107,7 +107,7 @@ public class PlayerControllerIso : MonoBehaviour
     private void Move()
     {
         float x = Input.GetAxisRaw("Horizontal") * speed;
-        float y= Input.GetAxisRaw("Vertical") * speed;
+        float y = Input.GetAxisRaw("Vertical") * speed;
         rb.velocity = new Vector2(x, y);
 
         if (rb.velocity.x > 0)

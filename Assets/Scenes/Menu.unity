@@ -4609,7 +4609,7 @@ GameObject:
   - component: {fileID: 1234226642}
   - component: {fileID: 1234226641}
   m_Layer: 5
-  m_Name: HighScore
+  m_Name: HighScoreCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
